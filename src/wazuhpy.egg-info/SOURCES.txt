@@ -1,0 +1,17 @@
+pyproject.toml
+src/wazuhpy/__init__.py
+src/wazuhpy/wazuhpy.py
+src/wazuhpy.egg-info/PKG-INFO
+src/wazuhpy.egg-info/SOURCES.txt
+src/wazuhpy.egg-info/dependency_links.txt
+src/wazuhpy.egg-info/requires.txt
+src/wazuhpy.egg-info/top_level.txt
+src/wazuhpy/endpoints/agents.py
+src/wazuhpy/endpoints/endpoint.py
+src/wazuhpy/endpoints/groups.py
+src/wazuhpy/endpoints/syscollector.py
+src/wazuhpy/endpoints/vulnerability.py
+tests/test_agents_endpoint.py
+tests/test_client.py
+tests/test_groups_endpoint.py
+tests/test_syscollector_endpoint.py

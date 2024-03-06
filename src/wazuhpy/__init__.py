@@ -1,0 +1,1 @@
+from .wazuhpy import WazuhClient

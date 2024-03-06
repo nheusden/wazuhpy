@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: wazuhpy
+Version: 0.1.0
+Summary: Wazuh API Wrapper
+Author-email: nheusden <44884540+nheusden@users.noreply.github.com>
+License: MIT
+Project-URL: Homepage, https://github.com/nheusden/wazuhpy
+Keywords: wazuh,api,wrapper
+Requires-Python: >=3.12
+Requires-Dist: requests~=2.31
+Provides-Extra: dev
+Requires-Dist: responses>=0.25.0; extra == "dev"
+Requires-Dist: pytest>=8.0.2; extra == "dev"
