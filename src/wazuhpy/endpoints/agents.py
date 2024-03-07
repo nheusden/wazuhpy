@@ -3,7 +3,7 @@ import requests
 from typing import Optional, List
 from .endpoint import BaseEndpoint
 
-# todo: write test for delete method
+
 # todo: write test for active_config method
 
 class WazuhAgents(BaseEndpoint):
@@ -56,6 +56,7 @@ class WazuhAgents(BaseEndpoint):
                   'version': version,
                   'group': group,
                   'node_name': node_name,
+                  'name': name,
                   'ip': ip_address,
                   'registerIP': register_ip}
 
