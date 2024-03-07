@@ -73,6 +73,22 @@ class TestWazuhAgentsEndpoints:
         assert result.request.body == json.dumps({'name': new_agent})
 
     @responses.activate
+    def test_agents_endpoint_delete_agent(self, client):
+        agents_list = ['003', '004']
+        status = ['disconnected', 'never_connected']
+
+        responses.add(
+            responses.DELETE,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=200,
+        )
+        result = client.agents.delete(agents_list=agents_list, status=status, older_than='1h')
+        assert result.url == (f'{base_url}/agents?older_than=1h&agents_list=003%2C004&'
+                              f'status=disconnected%2Cnever_connected')
+        assert result.request.method == 'DELETE'
+
+    @responses.activate
     def test_agents_endpoint_remove_agent_from_one_or_more_groups(self, client):
 
         agent_id = '001'
