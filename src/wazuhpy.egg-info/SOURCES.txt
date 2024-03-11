@@ -1,3 +1,4 @@
+README.md
 pyproject.toml
 src/wazuhpy/__init__.py
 src/wazuhpy/wazuhpy.py
