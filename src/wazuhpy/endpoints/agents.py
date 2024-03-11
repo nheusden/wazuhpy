@@ -233,3 +233,35 @@ class WazuhAgents(BaseEndpoint):
                   'groups_list': f"{','.join(groups_list) if groups_list else None}"}
 
         return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+
+    def distinct(self, pretty: bool = False, wait: bool = False, fields: List = None,
+                 offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
+                 query: str = None):
+        """
+        Return all the different combinations that agents have for the selected fields. It also indicates the
+        total number of agents that have each combination
+
+        :param pretty:
+        :param wait:
+        :param fields:
+        :param offset:
+        :param limit:
+        :param sort:
+        :param search:
+        :param query:
+        :return:
+        """
+        endpoint = f'{self.url}/agents/stats/distinct'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None,
+                  'offset': str(offset),
+                  'limit': str(limit),
+                  'sort': sort,
+                  'search': search,
+                  'q': query}
+
+        if fields:
+            params.update({'fields': f"{','.join(fields) if fields is not None else ''}"})
+
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
