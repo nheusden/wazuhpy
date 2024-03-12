@@ -133,3 +133,40 @@ class TestWazuhAgentsEndpoints:
         assert result.url == f'{base_url}/agents/{agent_id}/group/{group_id}'
         assert result.json().get('message') == f"Agent '{agent_id}' removed from '{group_id}'."
 
+    @responses.activate
+    def test_agents_endpoint_distinct(self, client):
+
+        fields = ['name', 'os.name', 'status', 'group']
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents\/stats\/distinct'),
+            json={},
+            status=200,
+        )
+
+        result = client.agents.distinct(fields=fields, pretty=True)
+
+        assert result.url == (f'{base_url}/agents/stats/distinct?pretty=True&'
+                              f'offset=0&limit=500&fields=name%2Cos.name%2Cstatus%2Cgroup')
+
+    @responses.activate
+    def test_agents_endpoint_active_config(self, client):
+        agent_id = '003'
+        component = 'agent'
+        configuration = 'labels'
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents\/\w*\/config\/\w*\/\w*'),
+            json={},
+            status=200,
+        )
+
+        result = client.agents.active_config(agent_id=agent_id,
+                                             component=component,
+                                             configuration=configuration,
+                                             pretty=True)
+
+        assert result.url == f'{base_url}/agents/{agent_id}/config/{component}/{configuration}?pretty=True'
+
