@@ -193,8 +193,54 @@ class WazuhSyscollector(BaseEndpoint):
 
         return self._do(http_method='GET', endpoint=endpoint, params=params)
 
-    def agent_netproto(self):
-        pass
+    def agent_netproto(self, agent_id: str, pretty: bool = False, wait: bool = False,
+                       offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
+                       select: list = None, iface: str = None, type: str = None, gateway: str = None,
+                       dhcp: str = None, query: str = None, distinct: bool = False):
+        """
+        Return the agent's routing configuration for each network interface
+
+        :param agent_id: Agent ID. All possible values from 000 onwards
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param offset: First element to return in the collection (Default: 0)
+        :param limit: Maximum number of elements to return. Although up to 100.000 can be specified,
+            it is recommended not to exceed 500 elements. Responses may be slower the more this number is exceeded.
+            (Default: 500)
+        :param sort: Sort the collection by a field or fields (separated by comma). Use +/- at the beggining to
+            list in ascending or descending order. Use '.' for nested fields. For example, '{field1: field2}'
+            may be selected with 'field1.field2'
+        :param search: Look for elements containing the specified string. To obtain a complementary search, use
+            '-' at the beginning
+        :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
+            '{field1: field2}' may be selected with 'field1.field2'
+        :param iface: Filter by network interface
+        :param type: Type of network
+        :param gateway: Filter by network gateway
+        :param dhcp: Filter by network dhcp (enabled or disabled)
+        :param query: Query to filter results by. For example q="status=active"
+        :param distinct: Look for distinct values.
+        :return: Response object
+        """
+        endpoint = f'{self.url}/syscollector/{agent_id}/netproto'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None,
+                  'offset': str(offset),
+                  'limit': str(limit),
+                  'sort': sort,
+                  'search': search,
+                  'iface': iface,
+                  'type': type,
+                  'gateway': gateway,
+                  'dhcp': dhcp,
+                  'q': query,
+                  'distinct': 'True' if distinct else None}
+
+        if select:
+            params.update({'select': f"{','.join(select) if select is not None else ''}"})
+
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
 
     def agent_os(self):
         pass
