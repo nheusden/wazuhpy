@@ -316,8 +316,62 @@ class WazuhSyscollector(BaseEndpoint):
 
         return self._do(http_method='GET', endpoint=endpoint, params=params)
 
-    def agent_ports(self):
-        pass
+    def agent_ports(self, agent_id: str, pretty: bool = False, wait: bool = False,
+                    offset: int = None, limit: int = None, sort: str = None, search: str = None,
+                    select: list = None, pid: str = None, protocol: str = None, local_ip: str = None,
+                    local_port: str = None, remote_ip: str = None, tx_queue: str = None, state: str = None,
+                    process: str = None, query: str = None, distinct: bool = False):
+        """
+        Return the agent's ports info. This information include local IP, Remote IP, protocol information among others
+
+        :param agent_id: Agent ID. All possible values from 000 onwards
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param offset: First element to return in the collection
+        :param limit: Maximum number of elements to return. Although up to 100.000 can be specified, it is
+            recommended not to exceed 500 elements. Responses may be slower the more this number is exceeded.
+        :param sort: Sort the collection by a field or fields (separated by comma). Use +/- at the beggining to
+            list in ascending or descending order. Use '.' for nested fields. For example, '{field1: field2}'
+            may be selected with 'field1.field2'
+        :param search: Look for elements containing the specified string. To obtain a complementary search,
+            use '-' at the beginning
+        :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
+            '{field1: field2}' may be selected with 'field1.field2'
+        :param pid: Filter by pid
+        :param protocol: Filter by protocol
+        :param local_ip: Filter by Local IP
+        :param local_port: Filter by Local Port
+        :param remote_ip: Filter by Remote IP
+        :param tx_queue: Filter by tx_queue
+        :param state: Filter by state
+        :param process: Filter by process name
+        :param query: Query to filter results by. For example q="status=active"
+        :param distinct: Look for distinct values.
+        :return: Response object
+        """
+        endpoint = f'{self.url}/syscollector/{agent_id}/ports'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None,
+                  'offset': str(offset),
+                  'limit': str(limit),
+                  'sort': sort,
+                  'search': search,
+                  'pid': pid,
+                  'protocol': protocol,
+                  'local.ip': local_ip,
+                  'local.port': local_port,
+                  'remote.ip': remote_ip,
+                  'tx_queue': tx_queue,
+                  'state': state,
+                  'process': process,
+                  'q': query,
+                  'distinct': 'True' if distinct else None}
+
+        if select:
+            params.update({'select': f"{','.join(select) if select is not None else ''}"})
+
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
 
     def agent_processes(self):
         pass
