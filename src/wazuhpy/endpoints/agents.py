@@ -241,15 +241,19 @@ class WazuhAgents(BaseEndpoint):
         Return all the different combinations that agents have for the selected fields. It also indicates the
         total number of agents that have each combination
 
-        :param pretty:
-        :param wait:
-        :param fields:
-        :param offset:
-        :param limit:
-        :param sort:
-        :param search:
-        :param query:
-        :return:
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param fields: List of fields affecting the operation
+        :param offset: First element to return in the collection
+        :param limit: Maximum number of elements to return. Although up to 100.000 can be specified,
+            it is recommended not to exceed 500 elements. Responses may be slower the more this number is exceeded.
+        :param sort: Sort the collection by a field or fields (separated by comma). Use +/- at the beggining
+            to list in ascending or descending order. Use '.' for nested fields. For example, '{field1: field2}'
+            may be selected with 'field1.field2'
+        :param search: Look for elements containing the specified string. To obtain a complementary search,
+            use '-' at the beginning
+        :param query: Query to filter results by. For example q="status=active"
+        :return: Response object
         """
         endpoint = f'{self.url}/agents/stats/distinct'
 
