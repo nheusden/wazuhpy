@@ -108,8 +108,24 @@ class WazuhGroups(BaseEndpoint):
 
         return self._do(http_method='POST', endpoint=endpoint, data=payload, params=params)
 
-    def delete(self):
-        pass
+    def delete(self, groups_list: list, pretty: bool = False, wait: bool = False):
+        """
+        Delete all groups or a list of them
+
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param groups_list: List of group IDs (separated by comma), use the keyword 'all' to select all groups
+        :return: Response object
+        """
+        endpoint = f'{self.url}/groups'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None}
+
+        if groups_list:
+            params.update({'groups_list': f"{','.join(groups_list) if groups_list is not None else ''}"})
+
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
 
     def config(self, group_name: str, pretty: bool = False, wait: bool = False,
                offset: int = 0, limit: int = 500):
