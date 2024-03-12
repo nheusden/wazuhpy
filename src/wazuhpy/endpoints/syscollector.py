@@ -242,8 +242,27 @@ class WazuhSyscollector(BaseEndpoint):
 
         return self._do(http_method='GET', endpoint=endpoint, params=params)
 
-    def agent_os(self):
-        pass
+    def agent_os(self, agent_id: str, pretty: bool = False, wait: bool = False, select: list = None):
+        """
+        Return the agent's OS info. This information include os information, architecture
+        information among others of all agents
+
+        :param agent_id: Agent ID. All possible values from 000 onwards
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
+            '{field1: field2}' may be selected with 'field1.field2'
+        :return: Response object
+        """
+        endpoint = f'{self.url}/syscollector/{agent_id}/os'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None}
+
+        if select:
+            params.update({'select': f"{','.join(select) if select is not None else ''}"})
+
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
 
     def agent_packages(self, agent_id: str, pretty: bool = False, wait: bool = False,
                            offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
