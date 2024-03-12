@@ -317,7 +317,7 @@ class WazuhSyscollector(BaseEndpoint):
         return self._do(http_method='GET', endpoint=endpoint, params=params)
 
     def agent_ports(self, agent_id: str, pretty: bool = False, wait: bool = False,
-                    offset: int = None, limit: int = None, sort: str = None, search: str = None,
+                    offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                     select: list = None, pid: str = None, protocol: str = None, local_ip: str = None,
                     local_port: str = None, remote_ip: str = None, tx_queue: str = None, state: str = None,
                     process: str = None, query: str = None, distinct: bool = False):
@@ -373,5 +373,72 @@ class WazuhSyscollector(BaseEndpoint):
 
         return self._do(http_method='GET', endpoint=endpoint, params=params)
 
-    def agent_processes(self):
-        pass
+    def agent_processes(self, agent_id: str, pretty: bool = False, wait: bool = False,
+                        offset: int = 0, limit: int = 500, sort: str = None, search: str = None, select: list = None,
+                        pid: str = None, state: str = None, ppid: str = None, egroup: str = None, euser: str = None,
+                        fgroup: str = None, name: str = None, nlwp: str = None, pgrp: str = None, priority: str = None,
+                        rgroup: str = None, ruser: str = None, sgroup: str = None, suser: str = None, query: str = None,
+                        distinct: bool = False):
+        """
+        Return the agent's processes info
+
+        :param agent_id: Agent ID. All possible values from 000 onwards
+        :param pretty: Show results in human-readable format
+        :param wait: Disable timeout response
+        :param offset: First element to return in the collection
+        :param limit: Maximum number of elements to return. Although up to 100.000 can be specified, it is
+            recommended not to exceed 500 elements. Responses may be slower the more this number is exceeded.
+        :param sort: Sort the collection by a field or fields (separated by comma). Use +/- at the beggining to
+            list in ascending or descending order. Use '.' for nested fields. For example, '{field1: field2}'
+            may be selected with 'field1.field2'
+        :param search: Look for elements containing the specified string. To obtain a complementary search,
+            use '-' at the beginning
+        :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
+            '{field1: field2}' may be selected with 'field1.field2'
+        :param pid: Filter by process pid
+        :param state: Filter by process state
+        :param ppid: Filter by process parent pid
+        :param egroup: Filter by process egroup
+        :param euser: Filter by process euser
+        :param fgroup: Filter by process fgroup
+        :param name: Filter by process name
+        :param nlwp: Filter by process nlwp
+        :param pgrp: Filter by process pgrp
+        :param priority: Filter by process priority
+        :param rgroup: Filter by process rgroup
+        :param ruser: Filter by process ruser
+        :param sgroup: Filter by process sgroup
+        :param suser: Filter by process suser
+        :param query: Query to filter results by. For example q="status=active"
+        :param distinct: Look for distinct values.
+        :return: Response object
+        """
+        endpoint = f'{self.url}/syscolletor/{agent_id}/processes'
+
+        params = {'pretty': 'True' if pretty else None,
+                  'wait_for_complete': 'True' if wait else None,
+                  'offset': str(offset),
+                  'limit': str(limit),
+                  'sort': sort,
+                  'search': search,
+                  'pid': pid,
+                  'state': state,
+                  'ppid': ppid,
+                  'egroup': egroup,
+                  'euser': euser,
+                  'fgroup': fgroup,
+                  'name': name,
+                  'nlwp': nlwp,
+                  'pgrp': pgrp,
+                  'priority': priority,
+                  'rgroup': rgroup,
+                  'ruser': ruser,
+                  'sgroup': sgroup,
+                  'suser': suser,
+                  'q': query,
+                  'distinct': 'True' if distinct else None}
+
+        if select:
+            params.update({'select': f"{','.join(select) if select is not None else ''}"})
+
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
