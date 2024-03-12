@@ -413,7 +413,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param distinct: Look for distinct values.
         :return: Response object
         """
-        endpoint = f'{self.url}/syscolletor/{agent_id}/processes'
+        endpoint = f'{self.url}/syscollector/{agent_id}/processes'
 
         params = {'pretty': 'True' if pretty else None,
                   'wait_for_complete': 'True' if wait else None,
