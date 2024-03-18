@@ -14,7 +14,7 @@ class WazuhAgents(BaseEndpoint):
                purge: bool = False, older_than: str = None, query: str = None, os_platform: str = None,
                os_version: str = None, os_name: str = None, manager: str = None, version: str = None,
                group: str = None, node_name: str = None, name: str = None, ip_address: str = None,
-               register_ip: str = None):
+               register_ip: str = None, **kwargs):
         """
         Delete all agents or a list of them based on optional criteria
 
@@ -66,7 +66,7 @@ class WazuhAgents(BaseEndpoint):
             params.update({'agents_list': f"{','.join(agents_list) if agents_list is not None else ''}",
                            'status': f"{','.join(status) if status is not None else ''}"})
 
-        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params, **kwargs)
 
     def list(self, pretty: bool = False, wait: bool = False, agents_list: List = None,
              offset: int = 0, limit: int = 500, select: List = None, sort: str = None,
@@ -74,7 +74,7 @@ class WazuhAgents(BaseEndpoint):
              os_platform: str = None, os_version: str = None, os_name: str = None, manager: str = None,
              version: str = None, group: str = None, node_name: str = None, name: str = None,
              ip_address: str = None, register_ip: str = None, group_config_status: str = None,
-             distinct: bool = False):
+             distinct: bool = False, **kwargs):
         """
         Return information about all available agents or a list of them
 
@@ -148,9 +148,10 @@ class WazuhAgents(BaseEndpoint):
         if status:
             params.update({'status': f"{','.join(status) if status is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
-    def add(self, agent_name: str, ip_address: Optional[str] = None, pretty: bool = False, wait: bool = False):
+    def add(self, agent_name: str, ip_address: Optional[str] = None,
+            pretty: bool = False, wait: bool = False, **kwargs):
         """
          Add a new agent
 
@@ -172,10 +173,10 @@ class WazuhAgents(BaseEndpoint):
 
         payload = json.dumps(data)
 
-        return self._do(http_method='POST', endpoint=endpoint, data=payload, params=params)
+        return self._do(http_method='POST', endpoint=endpoint, data=payload, params=params, **kwargs)
 
     def active_config(self, agent_id: str, component: str,
-                      configuration: str, pretty: bool = False, wait: bool = False):
+                      configuration: str, pretty: bool = False, wait: bool = False, **kwargs):
         """
         Return the active configuration the agent is currently using. This can be different from the configuration
         present in the configuration file, if it has been modified and the agent has not been restarted yet
@@ -194,9 +195,9 @@ class WazuhAgents(BaseEndpoint):
         params = {'pretty': 'True' if pretty else None,
                   'wait_for_complete': 'True' if wait else None}
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
-    def remove_from_group(self, agent_id: str, group_id: str, pretty: bool = False, wait: bool = False):
+    def remove_from_group(self, agent_id: str, group_id: str, pretty: bool = False, wait: bool = False, **kwargs):
         """
         Remove an agent from a specified group. If the agent belongs to several groups,
         only the specified group will be deleted.
@@ -212,10 +213,10 @@ class WazuhAgents(BaseEndpoint):
         params = {'pretty': 'True' if pretty else None,
                   'wait_for_complete': 'True' if wait else None}
 
-        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params, **kwargs)
 
     def remove_from_groups(self, agent_id: str, pretty: bool = False,
-                          wait: bool = False, groups_list: List = None):
+                          wait: bool = False, groups_list: List = None, **kwargs):
         """
         Remove the agent from all groups or a list of them. The agent will
         automatically revert to the default group if it is removed from all its assigned groups
@@ -232,11 +233,11 @@ class WazuhAgents(BaseEndpoint):
                   'wait_for_complete': 'True' if wait else None,
                   'groups_list': f"{','.join(groups_list) if groups_list else None}"}
 
-        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params, **kwargs)
 
     def distinct(self, pretty: bool = False, wait: bool = False, fields: List = None,
                  offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
-                 query: str = None):
+                 query: str = None, **kwargs):
         """
         Return all the different combinations that agents have for the selected fields. It also indicates the
         total number of agents that have each combination
@@ -268,4 +269,4 @@ class WazuhAgents(BaseEndpoint):
         if fields:
             params.update({'fields': f"{','.join(fields) if fields is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)

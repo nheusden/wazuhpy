@@ -9,7 +9,7 @@ class WazuhSyscollector(BaseEndpoint):
         super().__init__(url, session, verify_ssl)
 
     def agent_hardware(self, agent_id: str, pretty: bool = False, wait: bool = False,
-                       select: list = None):
+                       select: list = None, **kwargs):
         """
         Return the agent's hardware info. This information include cpu, ram, scan info among others
 
@@ -28,11 +28,11 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_hotfixes(self, agent_id: str, pretty: bool = False, wait: bool = False,
                        offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
-                       select: list = None, hotfix: str = None, query: str = None, distinct: bool = False):
+                       select: list = None, hotfix: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return all hotfixes installed by Microsoft(R) in Windows(R) systems
 
@@ -70,12 +70,12 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_netaddr(self, agent_id: str, pretty: bool = False, wait: bool = False,
                       offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                       select: list = None, iface: str = None, proto: str = None, address: str = None,
-                      broadcast: str = None, netmask: str = None, query: str = None, distinct: bool = False):
+                      broadcast: str = None, netmask: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the agent's network address info. This information include used IP protocol,
         interface, IP address among others
@@ -121,14 +121,14 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_netiface(self, agent_id: str, pretty: bool = False, wait: bool = False,
                        offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                        select: list = None, name: str = None, adapter: str = None, type: str = None,
                        state: str = None, mtu: int = None, tx_packets: int = None, rx_packets: int = None,
                        tx_bytes: int = None, rx_bytes: int = None, tx_errors: int = None, rx_errors: int = None,
-                       tx_dropped: int = None, rx_dropped: int = None, query: str = None, distinct: bool = False):
+                       tx_dropped: int = None, rx_dropped: int = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the agent's network interface info. This information include rx, scan, tx info and some network
         information among others
@@ -191,12 +191,12 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_netproto(self, agent_id: str, pretty: bool = False, wait: bool = False,
                        offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                        select: list = None, iface: str = None, type: str = None, gateway: str = None,
-                       dhcp: str = None, query: str = None, distinct: bool = False):
+                       dhcp: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the agent's routing configuration for each network interface
 
@@ -240,9 +240,9 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
-    def agent_os(self, agent_id: str, pretty: bool = False, wait: bool = False, select: list = None):
+    def agent_os(self, agent_id: str, pretty: bool = False, wait: bool = False, select: list = None, **kwargs):
         """
         Return the agent's OS info. This information include os information, architecture
         information among others of all agents
@@ -262,12 +262,12 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_packages(self, agent_id: str, pretty: bool = False, wait: bool = False,
                            offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                            select: List = None, vendor: str = None, name: str = None, architecture: str = None,
-                           format: str = None, version: str = None, query: str = None, distinct: bool = False):
+                           format: str = None, version: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the agent's packages info. This information include name, section, size,
         priority information of all packages among others
@@ -314,13 +314,13 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_ports(self, agent_id: str, pretty: bool = False, wait: bool = False,
                     offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
                     select: list = None, pid: str = None, protocol: str = None, local_ip: str = None,
                     local_port: str = None, remote_ip: str = None, tx_queue: str = None, state: str = None,
-                    process: str = None, query: str = None, distinct: bool = False):
+                    process: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the agent's ports info. This information include local IP, Remote IP, protocol information among others
 
@@ -371,14 +371,14 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agent_processes(self, agent_id: str, pretty: bool = False, wait: bool = False,
                         offset: int = 0, limit: int = 500, sort: str = None, search: str = None, select: list = None,
                         pid: str = None, state: str = None, ppid: str = None, egroup: str = None, euser: str = None,
                         fgroup: str = None, name: str = None, nlwp: str = None, pgrp: str = None, priority: str = None,
                         rgroup: str = None, ruser: str = None, sgroup: str = None, suser: str = None, query: str = None,
-                        distinct: bool = False):
+                        distinct: bool = False, **kwargs):
         """
         Return the agent's processes info
 
@@ -441,4 +441,4 @@ class WazuhSyscollector(BaseEndpoint):
         if select:
             params.update({'select': f"{','.join(select) if select is not None else ''}"})
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)

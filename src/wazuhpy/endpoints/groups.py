@@ -10,7 +10,7 @@ class WazuhGroups(BaseEndpoint):
 
     def get(self, pretty: bool = False, wait: bool = False, group_list: list = None,
             offset: int = 0, limit: int = 500, sort: str = None, search: str = None,
-            hash: str = None, query: str = None, select: str = None, distinct: bool = False):
+            hash: str = None, query: str = None, select: str = None, distinct: bool = False, **kwargs):
         """
         Get information about all groups or a list of them. Returns a list containing
         basic information about each group such as number of agents belonging to the
@@ -48,11 +48,11 @@ class WazuhGroups(BaseEndpoint):
                   'select': select,
                   'distinct': 'True' if distinct else None}
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
     def agents(self, group_name: str, pretty: bool = False, wait: bool = False,
                offset: int = 0, limit: int = 500, select: str = None, sort: str = None,
-               search: str = None, status: str = None, query: str = None, distinct: bool = False):
+               search: str = None, status: str = None, query: str = None, distinct: bool = False, **kwargs):
         """
         Return the list of agents that belong to the specified group
 
@@ -87,9 +87,9 @@ class WazuhGroups(BaseEndpoint):
                   'q': query,
                   'distinct': 'True' if distinct else None}
 
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
 
-    def create(self, group_name: str, pretty: bool = False, wait: bool = False):
+    def create(self, group_name: str, pretty: bool = False, wait: bool = False, **kwargs):
         """
         Create a new group
 
@@ -106,9 +106,9 @@ class WazuhGroups(BaseEndpoint):
 
         payload = json.dumps({'group_id': group_name})
 
-        return self._do(http_method='POST', endpoint=endpoint, data=payload, params=params)
+        return self._do(http_method='POST', endpoint=endpoint, data=payload, params=params, **kwargs)
 
-    def delete(self, groups_list: list, pretty: bool = False, wait: bool = False):
+    def delete(self, groups_list: list, pretty: bool = False, wait: bool = False, **kwargs):
         """
         Delete all groups or a list of them
 
@@ -125,10 +125,10 @@ class WazuhGroups(BaseEndpoint):
         if groups_list:
             params.update({'groups_list': f"{','.join(groups_list) if groups_list is not None else ''}"})
 
-        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params, **kwargs)
 
     def config(self, group_name: str, pretty: bool = False, wait: bool = False,
-               offset: int = 0, limit: int = 500):
+               offset: int = 0, limit: int = 500, **kwargs):
         """
         Return the group configuration defined in the agent.conf file
 
@@ -146,4 +146,4 @@ class WazuhGroups(BaseEndpoint):
                   'wait_for_complete': 'True' if wait else None,
                   'offset': str(offset),
                   'limit': str(limit)}
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
+        return self._do(http_method='GET', endpoint=endpoint, params=params, **kwargs)
