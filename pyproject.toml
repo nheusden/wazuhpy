@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "wazuhpy"
 description = "Wazuh API Wrapper"
 license = { text = "MIT" }
-version = "0.1.0"
+version = "0.1.1"
 requires-python = ">=3.12"
 authors = [
     {name = "nheusden", email = "44884540+nheusden@users.noreply.github.com"}

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: wazuhpy
-Version: 0.1.0
+Version: 0.1.1
 Summary: Wazuh API Wrapper
 Author-email: nheusden <44884540+nheusden@users.noreply.github.com>
 License: MIT
