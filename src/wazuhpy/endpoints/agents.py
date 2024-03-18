@@ -4,8 +4,6 @@ from typing import Optional, List
 from .endpoint import BaseEndpoint
 
 
-# todo: write test for active_config method
-
 class WazuhAgents(BaseEndpoint):
     def __init__(self, url: str, session: requests.Session, verify_ssl: bool = True):
         super().__init__(url, session, verify_ssl)
@@ -40,6 +38,7 @@ class WazuhAgents(BaseEndpoint):
         :param ip_address: Filter by the IP used by the agent to communicate with the manager.
             If it's not available, it will have the same value as registerIP
         :param register_ip: Filter by the IP used when registering the agent
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents'
@@ -112,6 +111,7 @@ class WazuhAgents(BaseEndpoint):
         :param register_ip: Filter by the IP used when registering the agent
         :param group_config_status: Agent groups configuration sync status
         :param distinct: Look for distinct values
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents'
@@ -160,6 +160,7 @@ class WazuhAgents(BaseEndpoint):
             Allowed values: IP, IP/NET, ANY
         :param pretty: Show results in human-readable format
         :param wait: Disable timeout response
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents'
@@ -187,6 +188,7 @@ class WazuhAgents(BaseEndpoint):
             on the selected component.
         :param pretty: Show results in human-readable format
         :param wait: Disable timeout response
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
 
@@ -206,6 +208,7 @@ class WazuhAgents(BaseEndpoint):
         :param group_id: (required) Group ID. (Name of the group)
         :param pretty: Show results in human-readable forma
         :param wait: Disable timeout response
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents/{agent_id}/group/{group_id}'
@@ -225,6 +228,7 @@ class WazuhAgents(BaseEndpoint):
         :param pretty: Show results in human-readable format
         :param wait: Disable timeout response
         :param groups_list: List of group IDs, all groups selected by default if not specified
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents/{agent_id}/group'
@@ -254,6 +258,7 @@ class WazuhAgents(BaseEndpoint):
         :param search: Look for elements containing the specified string. To obtain a complementary search,
             use '-' at the beginning
         :param query: Query to filter results by. For example q="status=active"
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/agents/stats/distinct'

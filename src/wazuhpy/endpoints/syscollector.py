@@ -18,6 +18,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param wait: Disable timeout response
         :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
             '{field1: field2}' may be selected with 'field1.field2'
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/hardware'
@@ -53,6 +54,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param hotfix: Filter by hotfix
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/hotfixes'
@@ -100,6 +102,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param netmask: Filter by netmask
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/netaddr'
@@ -162,6 +165,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param rx_dropped: Filter by rx.dropped
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/netiface'
@@ -220,6 +224,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param dhcp: Filter by network dhcp (enabled or disabled)
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/netproto'
@@ -252,6 +257,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param wait: Disable timeout response
         :param select: Select which fields to return (separated by comma). Use '.' for nested fields. For example,
             '{field1: field2}' may be selected with 'field1.field2'
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/os'
@@ -293,6 +299,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param version: Filter by package version
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/packages'
@@ -347,6 +354,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param process: Filter by process name
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/ports'
@@ -411,6 +419,7 @@ class WazuhSyscollector(BaseEndpoint):
         :param suser: Filter by process suser
         :param query: Query to filter results by. For example q="status=active"
         :param distinct: Look for distinct values.
+        :other_param retry: can be bool or and instance of Retry
         :return: Response object
         """
         endpoint = f'{self.url}/syscollector/{agent_id}/processes'

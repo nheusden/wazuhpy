@@ -171,13 +171,12 @@ class TestWazuhAgentsEndpoints:
         assert result.url == f'{base_url}/agents/{agent_id}/config/{component}/{configuration}?pretty=True'
 
     @responses.activate
-    def test_agents_endpoint_get_agent_list_with_retries(self, client):
+    def test_agents_endpoint_get_agent_list_with_retry_as_instance_of_retry(self, client):
         from requests.adapters import Retry
 
-        retries = Retry(total=5,
-                        backoff_factor=0.1,
-                        status_forcelist=[500, 502, 503, 504],
-                        )
+        retry = Retry(total=10,
+                      backoff_factor=0.1,
+                      status_forcelist=[500, 502, 503, 504])
         
         agents_list = ['001', '003']
 
@@ -186,7 +185,7 @@ class TestWazuhAgentsEndpoints:
             re.compile(rf'{base_url}\/agents'),
             json={},
             status=500,
-            match=[matchers.request_kwargs_matcher({'retries': Retry(total=5)})],
+            match=[matchers.request_kwargs_matcher({'retry': Retry(total=5)})],
         )
 
         responses.add(
@@ -217,8 +216,53 @@ class TestWazuhAgentsEndpoints:
             status=200,
         )
 
-        result = client.agents.list(agents_list=['001', '003'], retries=retries)
+        result = client.agents.list(agents_list=['001', '003'], retry=retry)
         assert responses.assert_call_count(f'{base_url}/agents?offset=0&limit=500&agents_list=001%2C003', 4)
+
+    @responses.activate
+    def test_agents_endpoint_get_agent_list_with_retry_as_bool(self, client):
+        from requests.adapters import Retry
+
+        agents_list = ['001', '003', '002']
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=500,
+            match=[matchers.request_kwargs_matcher({'retry': Retry(total=5)})],
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=502,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=503,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=504,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=200,
+        )
+
+        result = client.agents.list(agents_list=agents_list, retry=True)
+        assert responses.assert_call_count(f'{base_url}/agents?offset=0&limit=500&agents_list=001%2C003%2C002', 4)
 
 
         

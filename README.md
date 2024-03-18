@@ -19,7 +19,7 @@ client = WazuhClient(url=WAZUH_SERVER_URL,
                      password='<password>',
                      verify_ssl=False)
 
-result = client.agents.list(pretty=True)
+result = client.agents.list(pretty=True, retry=True)
 print(result.text)
 ```
 
@@ -55,4 +55,7 @@ Get devices in the 'Test_Group_One' group
 ```python
 result = client.groups.agents(group_name='Test_Group_One', pretty=True)
 ```
+
+
+
 
