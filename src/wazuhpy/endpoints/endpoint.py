@@ -3,6 +3,7 @@ import requests
 from typing import Optional, Dict
 
 from requests.exceptions import HTTPError
+from requests.adapters import HTTPAdapter
 
 
 class BaseEndpoint:
@@ -14,6 +15,11 @@ class BaseEndpoint:
 
     def _do(self, http_method: str, endpoint: str, params: Dict = None,
             data=None, files: Dict = None, **kwargs):
+
+        if 'retries' in kwargs:
+            retries = kwargs.pop('retries')
+            self.session.mount('https://', HTTPAdapter(max_retries=retries))
+            
         try:
             response = self.session.request(method=http_method, url=endpoint, params=params,
                                             data=data, files=files, verify=self.verify_ssl, **kwargs)
