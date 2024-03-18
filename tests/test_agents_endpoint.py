@@ -170,3 +170,56 @@ class TestWazuhAgentsEndpoints:
 
         assert result.url == f'{base_url}/agents/{agent_id}/config/{component}/{configuration}?pretty=True'
 
+    @responses.activate
+    def test_agents_endpoint_get_agent_list_with_retries(self, client):
+        from requests.adapters import Retry
+
+        retries = Retry(total=5,
+                        backoff_factor=0.1,
+                        status_forcelist=[500, 502, 503, 504],
+                        )
+        
+        agents_list = ['001', '003']
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=500,
+            match=[matchers.request_kwargs_matcher({'retries': Retry(total=5)})],
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=502,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=503,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=504,
+        )
+
+        responses.add(
+            responses.GET,
+            re.compile(rf'{base_url}\/agents'),
+            json={},
+            status=200,
+        )
+
+        result = client.agents.list(agents_list=['001', '003'], retries=retries)
+        assert responses.assert_call_count(f'{base_url}/agents?offset=0&limit=500&agents_list=001%2C003', 4)
+
+
+        
+
